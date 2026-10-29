@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusSpace | Your Campus. Smarter. Simpler.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%232864e8'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="toast" role="status" aria-live="polite"></div>
+<section id="auth-view" class="auth-wrap">
+<div class="auth-brand"><div class="brand-mark">C</div><p class="eyebrow">YOUR CAMPUS. SMARTER. SIMPLER.</p><h1>CampusSpace</h1><p>Find a suitable classroom, report campus issues, and check canteen crowd estimates.</p><div class="auth-illustration"><span>🏫</span><span>🧭</span><span>🛠️</span><span>🥗</span></div></div>
+<div class="auth-card">
+    <div class="tabs"><button class="tab active" data-auth="login">Sign in</button><button class="tab" data-auth="register">Create account</button></div>
+    <form id="login-form" class="auth-form">
+        <h2>Welcome back</h2>
+        <label>Email address<input name="email" type="email" required autocomplete="username" placeholder="you@university.edu"></label>
+        <label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Your password"></label>
+        <button class="btn primary full">Sign in</button>
+    </form>
+    <form id="register-form" class="auth-form hidden">
+        <h2>Create your account</h2>
+        <label>Full name<input name="full_name" required minlength="2" placeholder="Your full name"></label>
+        <label>Email address<input name="email" type="email" required placeholder="you@university.edu"></label>
+        <label>Department<select name="department" required>
+            <option value="">Select department</option>
+            <option>Engineering</option>
+            <option>Designing</option>
+            <option>Agriculture</option>
+            <option>Computer Science</option>
+            <option>Business</option>
+            <option>Humanities</option>
+            <option>Science</option>
+            <option>Other</option>
+        </select></label>
+        <label>Password<input name="password" type="password" required minlength="8" placeholder="At least 8 characters"></label>
+        <button class="btn primary full">Create student account</button>
+    </form>
+</div>
+</section>
+<div id="app-view" class="app hidden">
+<aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">C</span><span>CampusSpace<small>Campus assistance</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav id="main-nav">
+    <button class="nav-item active" data-page="dashboard"><span>▦</span> Overview</button>
+    <button class="nav-item" data-page="classrooms"><span>⌂</span> Classroom finder</button>
+    <button class="nav-item" data-page="navigation"><span>⌖</span> Blocks & floors</button>
+    <button class="nav-item" data-page="faults"><span>⚒</span> Fault reports</button>
+    <button class="nav-item" data-page="canteens"><span>◉</span> Scan & Done</button>
+    <button class="nav-item" data-page="visits"><span>◷</span> My canteen visits</button>
+    <button class="nav-item" data-page="timetable"><span>▤</span> Timetable</button>
+    <button class="nav-item role-staff hidden" data-page="maintenance"><span>✓</span> Maintenance desk</button>
+    <button class="nav-item role-admin hidden" data-page="admin"><span>⚙</span> Admin console</button>
+    </nav>
+    <div class="sidebar-bottom">
+    <div class="user-mini"><div class="avatar" id="avatar">U</div><div><strong id="side-name">Campus user</strong><small id="side-role">Student</small></div></div>
+    <button id="logout-btn" class="btn ghost full">Sign out</button>
+    </div>
+</aside>
+<main class="main">
+    <header class="topbar">
+    <button id="mobile-menu" class="icon-btn" aria-label="Toggle navigation">☰</button>
+    <div><p class="eyebrow" id="date-label">CAMPUS WORKSPACE</p><h2 id="page-title">Overview</h2></div>
+    <div class="top-right">
+        <button id="help-btn" class="icon-btn" style="margin-right:10px; background:transparent; border:none; cursor:pointer; font-size:16px; color:var(--muted);" title="Help">❔</button>
+<button id="notif-btn" class="icon-btn" style="position:relative; margin-right:10px; background:transparent; border:none; cursor:pointer; font-size:18px;" title="Notifications">🔔<span id="notif-dot" style="position:absolute; top:0; right:0; width:8px; height:8px; background:#ef4444; border-radius:50%; display:none;"></span></button>
+    <button id="theme-toggle" class="icon-btn" style="display:block; background:transparent; border:none; cursor:pointer; font-size:18px;" title="Toggle Dark Mode">🌙</button>
+        <span class="status-dot"></span>
+        <span id="connection-label">Connecting</span>
+        <div class="avatar" id="top-avatar">U</div>
+    </div>
+    </header>
+    <div class="content">
+    <section class="page active" id="page-dashboard"><div class="welcome panel"><div><p class="eyebrow light">CAMPUSSPACE OVERVIEW</p><h1 id="welcome-title">Good day 👋</h1><p>Find a room that fits your next study session, and keep campus facilities working.</p><button class="btn white" data-go="classrooms">Find a classroom <span>→</span></button></div><div class="welcome-art">🏫</div></div><div class="stats-grid" id="stats-grid"></div><div class="grid-two"><div class="panel"><div class="panel-head"><div><h3>Quick actions</h3><p>Common campus tasks</p></div></div><div class="quick-grid"><button class="quick-card" data-go="classrooms"><span class="quick-icon blue">⌂</span><strong>Find a classroom</strong><small>Filter by block and floor</small></button><button class="quick-card" data-go="faults"><span class="quick-icon orange">⚒</span><strong>Report a fault</strong><small>Get a trackable ticket ID</small></button><button class="quick-card" data-go="canteens"><span class="quick-icon green">◉</span><strong>Canteen crowd</strong><small>See active registrations</small></button><button class="quick-card" data-go="timetable"><span class="quick-icon purple">▤</span><strong>View timetable</strong><small>Check scheduled classes</small></button></div></div><div class="panel"><div class="panel-head"><div><h3>Campus status</h3><p>Seeded prototype data</p></div><span class="pill info">DEMO DATA</span></div><div class="notice"><strong>Availability is an estimate</strong><p>An empty timetable slot does not guarantee a room is physically empty. Recent student verification improves confidence.</p></div><div class="notice warn"><strong>Safety first</strong><p>For sparks, exposed wiring or burning smells, do not touch the equipment. Contact campus authorities immediately.</p></div></div></div><div class="panel" id="my-bookings-panel" style="display:none;">
+        <div class="panel-head"><div><h3>My Upcoming Bookings</h3><p>Rooms you have reserved</p></div></div>
+        <div id="my-bookings-list" class="table-wrap"></div>
+    </div>
+    <div class="panel"><div class="panel-head"><div><h3>Recent fault reports</h3><p>Latest issues requiring attention</p></div><button class="btn secondary small-btn" data-go="faults">View all</button></div><div id="recent-faults" class="table-wrap"><p class="muted">Loading reports…</p></div></div></section>
+    <section class="page" id="page-classrooms"><div class="page-intro"><div><h1>Classroom finder</h1><p>Search 320 seeded classrooms across Block-25 to Block-28.</p></div><button class="btn primary" id="refresh-rooms">↻ Refresh</button></div><div class="panel filters"><label>Block<select id="filter-block"><option value="">All blocks</option></select></label><label>Floor<select id="filter-floor"><option value="">All floors</option></select></label><label>Search room<input id="room-search" placeholder="e.g. B25-101"></label><label class="check-label"><input id="filter-quiet" type="checkbox" checked> Quiet zone</label><button class="btn secondary" id="search-rooms">Search</button></div><div class="legend"><span><i class="dot green"></i> Reported available</span><span><i class="dot blue"></i> No scheduled class (unconfirmed)</span><span><i class="dot red"></i> Scheduled / restricted</span></div><div id="room-grid" class="room-grid"><div class="loading-spinner"></div></div></section>
+    <section class="page" id="page-navigation"><div class="page-intro"><div><h1>Blocks & floors</h1><p>Campus layout based on the supplied schema.</p></div></div><div id="block-grid" class="block-grid"></div><div class="panel map-placeholder"><div class="map-symbol">⌖</div><h3>Campus map</h3><p>Building coordinates and pathway data have not been supplied. This prototype displays blocks and alleyway-access rules but does not invent walking routes.</p></div></section>
+    <section class="page" id="page-faults"><div class="page-intro"><div><h1>Fault reports</h1><p>Report an issue or track a ticket.</p></div><button class="btn primary" id="new-fault-btn">＋ Report a fault</button></div><div class="panel hidden" id="fault-form-panel"><div class="panel-head"><div><h3>New maintenance report</h3><p>Provide enough detail for the team to locate the issue.</p></div><button class="icon-btn" id="close-fault-form">×</button></div><form id="fault-form" class="form-grid"><label>Location type<select name="location_type" id="fault-location-type"><option value="classroom">Classroom</option><option value="canteen">Canteen</option></select></label><label>Location<select name="location_id" id="fault-location" required></select></label><label>Fault category<select name="category" required><option>AC / Fan</option><option>Socket / Switch / Light</option><option>Projector / Equipment</option><option>Furniture</option><option>Water leakage</option><option>Other</option></select></label><label class="span-two">Description<textarea name="description" required minlength="5" rows="3" placeholder="Describe what happened and where…"></textarea></label><label class="span-two file-upload-label"><span class="file-upload-box">📷 Attach Photo (Optional)</span><input type="file" accept="image/*" class="hidden-file"></label><label class="urgent-check"><input type="checkbox" name="is_urgent"> Urgent safety hazard (e.g. sparks or exposed wiring)</label><div class="span-two safety-copy">For immediate danger, keep away from the equipment and contact campus authorities. This app is not an emergency service.</div><div class="span-two"><button class="btn primary">Submit report</button></div></form></div><div class="panel"><div class="panel-head"><div><h3>Ticket history</h3><p id="fault-subtitle">Your reports and their latest status</p></div><select id="fault-status-filter" class="compact-select"><option value="">All statuses</option><option>Submitted</option><option>In Progress</option><option>Completed</option><option>Escalated to Higher Authority</option></select></div><div class="table-wrap" id="fault-table"></div></div></section>
+    <section class="page" id="page-canteens"><div class="page-intro"><div><h1>Scan & Done</h1><p>Scan. Eat. Leave. Keep the Campus Moving.</p></div><button class="btn secondary" id="refresh-canteens">↻ Refresh crowd</button></div><div class="notice"><strong>How crowd estimates work</strong><p>Active QR registrations are compared with canteen capacity. They estimate participation, not the exact physical headcount or queue time.</p></div><div id="canteen-grid" class="canteen-grid"></div><div class="panel checkin-panel"><div><h3>Confirm a canteen check-in</h3><p>Enter the identifier shown on the canteen's QR code. Check-in expires after 20 minutes by default.</p></div><form id="checkin-form" class="inline-form"><input name="qr_identifier" required placeholder="e.g. QR_B25C_FLOOR6"><button type="button" class="btn secondary" id="simulate-scan-btn">📷 Simulate Scan</button><button class="btn primary">Confirm check-in</button></form></div></section>
+    <section class="page" id="page-visits"><div class="page-intro"><div><h1>My canteen visits</h1><p>Check out early to remove your registration from the active estimate.</p></div><button class="btn secondary" id="refresh-visits">↻ Refresh</button></div><div class="panel table-wrap" id="visits-table"></div></section>
+    <section class="page" id="page-timetable"><div class="page-intro"><div><h1>Timetable</h1><p>Seeded sample schedule (Monday entries). Import authorized timetable data as an administrator.</p></div><label class="inline-select">Day<select id="timetable-day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label></div><div class="panel table-wrap" id="timetable-table"></div></section>
+    <section class="page" id="page-maintenance"><div class="page-intro"><div><h1>Maintenance desk</h1><p>Review, assign and update submitted faults.</p></div><button class="btn secondary" id="refresh-maintenance">↻ Refresh</button></div><div id="maintenance-stats" class="stats-grid"></div><div class="panel table-wrap" id="maintenance-table"></div></section>
+    <section class="page" id="page-admin"><div class="page-intro"><div><h1>Admin console</h1><p>Manage accounts and inspect the seeded campus data.</p></div><button class="btn secondary" id="refresh-admin">↻ Refresh</button></div><div id="admin-stats" class="stats-grid"></div><div class="panel"><div class="panel-head"><div><h3>Create account</h3><p>Administrators can create student, maintenance, or additional administrator accounts. Admin passwords are hashed before storage.</p></div></div><form id="admin-create-user-form" class="form-grid"><label>Full name<input name="full_name" required minlength="2" maxlength="100" placeholder="Full name"></label><label>Email address<input name="email" type="email" required placeholder="person@campusspace.edu"></label><label>Department<select name="department" required><option value="">Select department</option><option>Engineering</option><option>Designing</option><option>Agriculture</option><option>Computer Science</option><option>Business</option><option>Humanities</option><option>Science</option><option>Facilities</option><option>Administration</option><option>Other</option></select></label><label>Initial password<input name="password" type="password" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="At least 8 characters"></label><label>Role<select name="role" required><option value="admin">Administrator — full system access</option><option value="maintenance">Maintenance staff</option><option value="student">Student</option></select></label><div><button class="btn primary">Create account</button></div></form></div><div class="panel"><div class="panel-head"><div><h3>User management</h3><p>Passwords are never displayed; only password hashes are stored. Administrators can change roles and reset passwords.</p></div></div><div class="table-wrap" id="users-table"></div></div>
+<div class="panel">
+    <div class="panel-head"><div><h3>Canteen QR Code Manager</h3><p>Download and print these QR codes for the canteen entrances.</p></div></div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; text-align:center;">
+        <div><img src="assets/qr/B25C.png" style="width:100px; height:100px; margin-bottom:10px;"><br><strong>B25 Main Canteen</strong><p class="muted small">QR_B25C_FLOOR6</p></div>
+        <div><img src="assets/qr/B26C.png" style="width:100px; height:100px; margin-bottom:10px;"><br><strong>B26 Main Canteen</strong><p class="muted small">QR_B26C_FLOOR6</p></div>
+        <div><img src="assets/qr/B27C.png" style="width:100px; height:100px; margin-bottom:10px;"><br><strong>B27 Main Canteen</strong><p class="muted small">QR_B27C_FLOOR6</p></div>
+        <div><img src="assets/qr/B28C.png" style="width:100px; height:100px; margin-bottom:10px;"><br><strong>B28 Main Canteen</strong><p class="muted small">QR_B28C_FLOOR6</p></div>
+    </div>
+</div>
+
+<div class="panel"><div class="panel-head"><div><h3>Timetable CSV import</h3><p>Required columns: classroom_id, subject_name, day_of_week, start_time, end_time; optional is_break_slot.</p></div></div><form id="timetable-import-form" class="inline-form"><input type="file" name="file" accept=".csv" required><button class="btn primary">Import CSV</button></form></div></section>
+    </div>
+    <footer>CampusSpace · Sample campus data · Confirm all availability on site.</footer>
+</main>
+</div>
+<script src="js/config.js"></script><script src="js/api.js"></script><script src="js/app.js"></script>
+
+<div id="help-modal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999; display:flex; justify-content:center; align-items:center;">
+    <div class="panel" style="width:400px; max-width:90%; background:var(--panel); color:var(--ink);">
+        <div class="panel-head">
+            <h3>How to use CampusSpace</h3>
+            <button id="close-help" class="icon-btn">×</button>
+        </div>
+        <ul style="line-height:1.8; font-size:13px; padding-left:20px; margin-bottom:0;">
+            <li><strong>Find a Room:</strong> Use the Classroom Finder. Green means recently verified.</li>
+            <li><strong>Book a Room:</strong> Click "Book 1hr" to reserve a space.</li>
+            <li><strong>Report Faults:</strong> Go to Fault Reports, pick a location, and submit a ticket.</li>
+            <li><strong>Canteen:</strong> Use Scan & Done to check in and see crowd levels.</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

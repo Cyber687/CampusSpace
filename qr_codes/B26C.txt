@@ -1,0 +1,3 @@
+Canteen: B26 Main Canteen
+Code: B26C
+QR payload: QR_B26C_FLOOR6
