@@ -1,130 +1,81 @@
-# CampusSpace — complete local MVP
+cat << 'EOF' > README.md
+# 🏫 CampusSpace
+### Smart Campus Assistance & Resource Management Platform
+**Tagline:** *Your Campus. Smarter. Simpler.*
 
-**Your Campus. Smarter. Simpler.** Responsive campus assistance prototype built from the updated project documents and the supplied SQLite seed schema.
+**Developed by:**
+- Karan Kr.
+- Aniket Nanda
+- Shreyansh D. Prajapati
 
-## Included capabilities
+---
 
-- Sign in, student registration, department field, PBKDF2 password hashing, signed expiring bearer tokens, role-based permissions.
-- One shared responsive interface with student, maintenance, and admin navigation.
-- Blocks/floors/classrooms loaded from the SQL seed database (4 blocks, 8 floors per block, 10 rooms per floor; 320 rooms total).
-- Classroom search by block/floor/room, room details, amenities, timetable conflict status, and time-stamped student verification with expiry.
-- Classroom booking with basic timetable/booking overlap validation.
-- Fault reports with unique ticket IDs, duplicate warning, urgent flag, status history, student-owned ticket privacy, staff-only updates, and 7-day escalation on request processing.
-- Canteen crowd estimate from active QR registrations, configurable per-canteen duration, duplicate active check-in prevention, early checkout, and expiry checks.
-- Maintenance desk, admin user role/account/password management, admin overview, and timetable CSV import.
-- API documentation at `/docs`, database initialization script, starter test, and setup notes.
+## 📖 Executive Summary
+CampusSpace is a full-stack web application designed to reduce everyday friction for university students, faculty, and maintenance staff. It brings together classroom discovery, infrastructure fault reporting, and canteen crowd estimation into one responsive, easy-to-use platform. 
 
-## Requirements
+The system is built as an **API-first microservice**, meaning it can be easily integrated into an existing University Management System (UMS) in the future.
 
-Python 3.11+ recommended. Windows PowerShell commands are shown below. Python 3.13 should also work with compatible current dependencies.
+## ✨ Key Features
+- **Smart Classroom Finder:** Live timetable checks combined with time-stamped student verifications (with expiry rules). Includes a "Book 1hr" feature for empty rooms.
+- **Infrastructure Fault Reporting:** 10-second reporting system for broken ACs, sockets, or projectors with trackable Ticket IDs and a 7-day auto-escalation rule.
+- **Scan & Done (Canteen):** QR-based check-in system with a 20-minute auto-expiry to estimate live canteen crowd levels.
+- **Admin & Maintenance Dashboards:** Role-based access control, user management, QR code generation, and ticket resolution tracking.
+- **Premium UI/UX:** Includes Dark Mode, mobile-responsive layout, skeleton loading states, and keyboard shortcuts.
 
-## Setup (Windows PowerShell)
+## 🛠️ Tech Stack
+- **Frontend:** HTML5, Vanilla CSS3, Vanilla JavaScript (No heavy frameworks, fully responsive).
+- **Backend:** Python 3, FastAPI.
+- **Database:** SQLite (PostgreSQL-ready for production).
+- **Security:** PBKDF2 password hashing, JWT (JSON Web Tokens) for authentication.
 
-```powershell
-cd "E:\Sem3_Work\Design Thinking Project\Project_Prototype"
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-Copy-Item .env.example .env
-```
+---
 
-Before using outside a local demo, edit `.env` and replace `JWT_SECRET_KEY` with a long random secret. The default is only for local development.
+## 🚀 Quick Start (1-Click Setup)
 
-Initialize the database once:
+We have provided automated setup scripts for both Windows and Linux/macOS to make installation seamless.
 
-```powershell
-python scripts\init_db.py
-```
+### For Windows Users:
+1. Open the project folder and double-click **`setup.bat`** (This creates the virtual environment, installs dependencies, and seeds the database).
+2. Double-click **`run.bat`** to start the server.
+3. Open your browser and go to: `http://127.0.0.1:8000/static/index.html`
 
-To discard local changes and rebuild from the supplied seed schema, use the destructive reset command only when you intend to delete the current database:
+### For Linux / macOS Users:
+1. Open the terminal in the project folder and run: `chmod +x setup.sh && ./setup.sh`
+2. Run: `./run.sh` to start the server.
+3. Open your browser and go to: `http://127.0.0.1:8000/static/index.html`
 
-```powershell
-python scripts\init_db.py --reset
-```
+---
 
-Start the application:
+## 🔐 Demo Accounts for Evaluation
+Use the following credentials to test the different role-based permissions. 
+*All demo accounts use the password: `CampusDemo123!`*
 
-```powershell
-python run.py
-```
+| Role | Email | Access Level |
+| :--- | :--- | :--- |
+| **Student** | `rohan@student.campusspace.edu` | Book rooms, report faults, scan QR codes. |
+| **Maintenance** | `rajesh.maint@campusspace.edu` | View and update fault ticket statuses. |
+| **Admin** | `karan@campusspace.edu` | Full access: Manage users, view QR codes, import timetables. |
 
-Open **http://127.0.0.1:8000/static/index.html** for the web app, or **http://127.0.0.1:8000/docs** for the API documentation.
+*(Note: There is also a hidden Bootstrap Admin account: `anonymous1@campusspace.edu.in` with password `campusspace1234`)*
 
-Alternative frontend server (if you prefer separate frontend/backend terminals):
+---
 
-```powershell
-python -m http.server 5500 --directory frontend
-```
+## 🔗 College App Integration Strategy
+CampusSpace is intentionally designed not as a silo, but as a modular service that the university can adopt:
+1. **Swagger API Docs:** FastAPI automatically generates interactive API documentation at `/docs`. The university IT team can use this to connect their existing mobile app to our backend.
+2. **SSO Ready:** The current JWT authentication can be swapped for University Single Sign-On (SSO) tokens.
+3. **Webhooks:** Maintenance tickets can be configured to push webhooks directly into the university's ERP system.
 
-Then open `http://127.0.0.1:5500`. The API CORS settings already allow this local origin.
-
-## Demo accounts
-
-Seeded accounts from the SQL file use this demo password: `CampusDemo123!`
-
-| Role | Email |
-|---|---|
-| Admin | `karan@campusspace.edu` |
-| Admin | `aniket@campusspace.edu` |
-| Admin | `shreyansh@campusspace.edu` |
-| Maintenance | `rajesh.maint@campusspace.edu` |
-| Maintenance | `suresh.maint@campusspace.edu` |
-| Maintenance | `amit.maint@campusspace.edu` |
-| Student | `rohan@student.campusspace.edu` |
-| Student | `priya@student.campusspace.edu` |
-
-Change demo passwords before showing this outside a controlled prototype. Newly registered users receive the student role; admins can promote users to maintenance/admin.
-
-## Database notes
-
-- `data/schema/Campus_Space_Dummy_Data.sql` is the provided schema and seed dataset. `scripts/init_db.py` loads it without using SQLAlchemy ORM metadata creation.
-- The initializer adds `user_credentials`, `maintenance_updates`, `classroom_bookings`, and `admin_audit_log` supporting tables. Passwords are stored as PBKDF2 hashes; the app never returns password hashes to the browser.
-- Seeded timetable data is illustrative and mostly Monday-only. Import an authorized CSV for real scheduling.
-- The initial schema has no department column on `users`, so department and account-active status are kept in `user_credentials`.
-
-## Timetable CSV format
-
-Required headers: `classroom_id,subject_name,day_of_week,start_time,end_time`. Optional header: `is_break_slot` (`0` or `1`). Times should use `HH:MM:SS` or compatible time strings. Import from the admin console or POST a multipart CSV to `/api/v1/admin/timetable/import`.
-
-## Important behaviour and limitations
-
-- **Availability is not a guarantee of physical vacancy.** The API first checks current-day timetable entries, then recent verification reports; rooms without a current class and without fresh verification are labelled `No scheduled class` with `unconfirmed` confidence.
-- Verification reports expire from status consideration after the configured `VERIFICATION_TTL_MINUTES` (default 60). Conflicting reports are not yet combined into a sophisticated confidence score; the latest fresh report is used.
-- Walking routes are not fabricated. Building coordinates and pathway data were not provided, so the map section explains that routes are not configured.
-- Canteen active registrations are estimates, not a physical headcount or reliable waiting-time prediction. Server-side expiry checks exclude expired visits even before a background cleanup task exists.
-- A scheduled request on any API call applies the 7-day escalation rule to overdue unresolved reports; no background scheduler is required for the prototype.
-- The fault photo upload workflow is not yet enabled in this MVP; reports are text-based. Do not upload sensitive or identifying information.
-- Classroom booking is a prototype reservation workflow, not an official university room-access authorization.
-- The current seed data contains a single Monday sample timetable. Don't interpret absent entries for other days as verified availability.
-
-## API routes
-
-- `POST /api/v1/auth/register`, `POST /api/v1/auth/login`, `GET /api/v1/auth/me`
-- `GET /api/v1/blocks`
-- `GET /api/v1/classrooms`, `GET /api/v1/classrooms/available`, `GET /api/v1/classrooms/{id}`
-- `POST /api/v1/classrooms/{id}/verifications`, `POST /api/v1/classrooms/{id}/bookings`
-- `GET /api/v1/timetable`, `POST /api/v1/admin/timetable/import`
-- `GET /api/v1/fault-reports`, `POST /api/v1/fault-reports`, `GET /api/v1/fault-reports/{id}`, `PATCH /api/v1/fault-reports/{id}`
-- `GET /api/v1/canteens`, `POST /api/v1/canteens/check-in`, `GET /api/v1/canteen-visits/mine`, `POST /api/v1/canteen-visits/{id}/checkout`
-- `GET /api/v1/maintenance/summary`
-- `GET /api/v1/admin/overview`, `GET /api/v1/admin/users`, `PATCH/DELETE /api/v1/admin/users/{id}`
-- `GET /health/live`
-
-## Tests
-
-```powershell
-pytest -q
-```
-
-## Security scope
-
-This is an educational local MVP, not a production-ready university deployment. Before production, use HTTPS, rotate secrets, implement rate limits and email verification/password reset, add protected file storage, audit/review retention policies, configure backups/monitoring, and validate access rules with the university. Do not expose the demo credentials publicly.
-
-
-## Bootstrap administrator
-The bundled database and database initialization script include a bootstrap administrator account:
-- Email: `anonymous1@campusspace.edu.in`
-- Initial password: `campusspace1234`
-
-The password is stored as a salted PBKDF2 hash, not as plaintext. Sign in and change this initial password before sharing the project. Any authenticated administrator can create additional admin accounts from **Admin console → Create account**, select the Administrator role, and manage users. The API restricts account creation and role changes to admins.
+## 📂 Project Structure
+```text
+CampusSpace/
+├── backend/            # FastAPI backend logic and database connection
+├── data/               # SQLite database and seed schema
+├── frontend/           # HTML, CSS, JS interface
+│   ├── css/
+│   ├── js/
+│   └── index.html
+├── scripts/            # Database initialization and QR generation scripts
+├── setup.sh / .bat     # 1-click installer
+├── run.sh / .bat       # 1-click server starter
+└── requirements.txt    # Python dependencies
