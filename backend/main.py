@@ -37,7 +37,15 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title=settings.app_name, version="1.0.0", description="CampusSpace campus assistance and resource management MVP", lifespan=lifespan)
-app.add_middleware(CORSMiddleware, allow_origins=["http://127.0.0.1:5500", "http://localhost:5500", "http://127.0.0.1:8000", "http://localhost:8000"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+
+# UPDATED CORS FOR RENDER DEPLOYMENT
+app.add_middleware(
+    CORSMiddleware, 
+    allow_origins=["*"], 
+    allow_credentials=True, 
+    allow_methods=["*"], 
+    allow_headers=["*"]
+)
 
 FRONTEND = ROOT_DIR / "frontend"
 if FRONTEND.exists():
@@ -183,7 +191,6 @@ def _room_status(conn, classroom_id):
 
 @app.get("/api/v1/classrooms/available")
 def available_classrooms(block_id: Optional[int]=None, floor_number: Optional[int]=None, search: Optional[str]=None, user=Depends(current_user)):
-    # Explicitly label unverified rooms rather than promising they are empty.
     all_rooms=classrooms(block_id=block_id,floor_number=floor_number,search=search,user=user)
     return [r for r in all_rooms if r["availability"]["status"] in ("No scheduled class","Reported Available")]
 
@@ -292,7 +299,6 @@ def create_fault(data:FaultIn,user=Depends(current_user)):
     try:
         if data.classroom_id and not conn.execute("SELECT 1 FROM classrooms WHERE id=?",(data.classroom_id,)).fetchone(): raise HTTPException(404,"Classroom not found")
         if data.canteen_id and not conn.execute("SELECT 1 FROM canteens WHERE id=?",(data.canteen_id,)).fetchone(): raise HTTPException(404,"Canteen not found")
-        # Link obvious duplicate open tickets rather than silently multiplying them.
         dup=conn.execute("SELECT ticket_id FROM fault_reports WHERE category=? AND COALESCE(classroom_id,0)=COALESCE(?,0) AND COALESCE(canteen_id,0)=COALESCE(?,0) AND status IN ('Submitted','In Progress','Escalated to Higher Authority') AND created_at >= datetime('now','-24 hours') LIMIT 1",(data.category,data.classroom_id,data.canteen_id)).fetchone()
         if dup: return {"message":"A similar open report already exists; please follow its ticket.","ticket_id":dup["ticket_id"],"possible_duplicate":True}
         ticket="CS-"+datetime.now().strftime("%y%m%d")+"-"+uuid.uuid4().hex[:6].upper()
@@ -349,7 +355,6 @@ class AdminUserCreateIn(BaseModel):
 
 @app.post("/api/v1/admin/users", status_code=201)
 def admin_create_user(data: AdminUserCreateIn, user=Depends(roles("admin"))):
-    """Create a user with a role assigned by an authenticated administrator."""
     if data.role not in ("student", "maintenance", "admin"):
         raise HTTPException(422, "Role must be student, maintenance, or admin")
     conn=connect()
