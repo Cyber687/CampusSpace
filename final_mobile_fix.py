@@ -60,4 +60,3 @@ css += """
 """
 with open('frontend/css/style.css', 'w') as f: f.write(css)
 print("✅ Added massive Mobile UI optimizations.")
-
