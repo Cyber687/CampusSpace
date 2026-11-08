@@ -38,11 +38,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=settings.app_name, version="1.0.0", description="CampusSpace campus assistance and resource management MVP", lifespan=lifespan)
 
-# UPDATED CORS FOR RENDER DEPLOYMENT
+# UPDATED CORS FOR MOBILE BROWSERS
 app.add_middleware(
     CORSMiddleware, 
     allow_origins=["*"], 
-    allow_credentials=True, 
+    allow_credentials=False,  # Must be False for mobile to allow wildcard origins
     allow_methods=["*"], 
     allow_headers=["*"]
 )
