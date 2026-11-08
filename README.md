@@ -1,4 +1,3 @@
-cat << 'EOF' > README.md
 # 🏫 CampusSpace
 ### Smart Campus Assistance & Resource Management Platform
 **Tagline:** *Your Campus. Smarter. Simpler.*
